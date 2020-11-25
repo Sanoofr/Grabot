@@ -12,27 +12,41 @@ const getResultHLTB = (message, commandBody) => {
   const timeTaken = Date.now() - message.createdTimestamp;
   const hltbArg = commandBody.slice(5);
   hltbService.search(hltbArg).then(result => {
+    console.log(result.length);
     const limit = result.length > 3 ? 3 : result.length;
-    result.slice(0, limit).forEach((item, index) => {
-      const game = {
-        color: 0x0099ff,
-        title: item.name,
-        url: `https://howlongtobeat.com/game?id=${item.id}`,
-        thumbnail: {
-          url: item.imageUrl,
-        },
-        fields: [
-          { name: item.timeLabels[0][1], value: `${item.gameplayMain} Hours`, inline: true },
-          { name: item.timeLabels[1][1], value: `${item.gameplayMainExtra} Hours `, inline: true },
-          { name: item.timeLabels[2][1], value: `${item.gameplayCompletionist} Hours `, inline: true },
-        ],
+    if(result.length === 0){
+      const NoResultMessage = {
+        color: 0xff0000,
+        title: `No result found on HTLB website`,
         timestamp: new Date(),
         footer: {
           text: `This message had a latency of ${timeTaken}ms.`,
         },
       };
-      message.reply({ embed: game });
-    });
+      message.reply({ embed: NoResultMessage});
+    } else {
+      result.slice(0, limit).forEach((item, index) => {
+        const game = {
+          color: 0x0099ff,
+          title: item.name,
+          url: `https://howlongtobeat.com/game?id=${item.id}`,
+          thumbnail: {
+            url: item.imageUrl,
+          },
+          fields: [
+            { name: item.timeLabels[0][1], value: `${item.gameplayMain} Hours`, inline: true },
+            { name: item.timeLabels[1][1], value: `${item.gameplayMainExtra} Hours `, inline: true },
+            { name: item.timeLabels[2][1], value: `${item.gameplayCompletionist} Hours `, inline: true },
+          ],
+          timestamp: new Date(),
+          footer: {
+            text: `This message had a latency of ${timeTaken}ms.`,
+          },
+        };
+        message.reply({ embed: game });
+      });
+    }
+   
     if(result.length > limit){
       const limitMessage = {
         color: 0xff0000,
