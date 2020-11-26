@@ -9,12 +9,12 @@ const hltbService = new hltb.HowLongToBeatService();
 const prefix = "!";
 
 const getResultHLTB = (message, commandBody) => {
-  const timeTaken = Date.now() - message.createdTimestamp;
   const hltbArg = commandBody.slice(5);
   hltbService.search(hltbArg).then(result => {
+    const timeTaken = Date.now() - message.createdTimestamp;
     console.log(result.length);
     const limit = result.length > 3 ? 3 : result.length;
-    if(result.length === 0){
+    if(result.length === 0){      
       const NoResultMessage = {
         color: 0xff0000,
         title: `No result found on HTLB website`,
@@ -82,6 +82,8 @@ client.on("message", function(message) {
     client.destroy();
   } else if(command === "hltb"){
     getResultHLTB(message, commandBody);
+  } else if(command === "virement")){
+    message.reply(`Va te faire foutre avec ton virement ${args[0]}.`);
   } else {
     const timeTaken = Date.now() - message.createdTimestamp;
     message.reply(`I don't know this command! This message had a latency of ${timeTaken}ms.`);
