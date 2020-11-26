@@ -82,7 +82,7 @@ client.on("message", function(message) {
     client.destroy();
   } else if(command === "hltb"){
     getResultHLTB(message, commandBody);
-  } else if(command === "virement")){
+  } else if(command === "virement"){
     message.reply(`Va te faire foutre avec ton virement ${args[0]}.`);
   } else {
     const timeTaken = Date.now() - message.createdTimestamp;
