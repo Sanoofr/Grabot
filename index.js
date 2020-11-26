@@ -1,65 +1,13 @@
 const Discord = require("discord.js");
-const hltb = require('howlongtobeat');
-
+// Config and tools
 const config = require("./config.json");
+const utils = require('./utils');
+
+// Services
+const hltbSrv = require("./hltbSrv");
 
 const client = new Discord.Client();
-const hltbService = new hltb.HowLongToBeatService();
-
 const prefix = "!";
-
-const getResultHLTB = (message, commandBody) => {
-  const hltbArg = commandBody.slice(5);
-  hltbService.search(hltbArg).then(result => {
-    const timeTaken = Date.now() - message.createdTimestamp;
-    console.log(result.length);
-    const limit = result.length > 3 ? 3 : result.length;
-    if(result.length === 0){      
-      const NoResultMessage = {
-        color: 0xff0000,
-        title: `No result found on HTLB website`,
-        timestamp: new Date(),
-        footer: {
-          text: `This message had a latency of ${timeTaken}ms.`,
-        },
-      };
-      message.reply({ embed: NoResultMessage});
-    } else {
-      result.slice(0, limit).forEach((item, index) => {
-        const game = {
-          color: 0x0099ff,
-          title: item.name,
-          url: `https://howlongtobeat.com/game?id=${item.id}`,
-          thumbnail: {
-            url: item.imageUrl,
-          },
-          fields: [
-            { name: item.timeLabels[0][1], value: `${item.gameplayMain} Hours`, inline: true },
-            { name: item.timeLabels[1][1], value: `${item.gameplayMainExtra} Hours `, inline: true },
-            { name: item.timeLabels[2][1], value: `${item.gameplayCompletionist} Hours `, inline: true },
-          ],
-          timestamp: new Date(),
-          footer: {
-            text: `This message had a latency of ${timeTaken}ms.`,
-          },
-        };
-        message.reply({ embed: game });
-      });
-    }
-   
-    if(result.length > limit){
-      const limitMessage = {
-        color: 0xff0000,
-        title: `Only ${limit} result displayed. ${result.length} available on HLTB website`,
-        timestamp: new Date(),
-        footer: {
-          text: `This message had a latency of ${timeTaken}ms.`,
-        },
-      };
-      message.reply({ embed: limitMessage});
-    }
-  });
-}
 
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
@@ -73,22 +21,28 @@ client.on("message", function(message) {
   const args = commandBody.split(' ');
   const command = args.shift().toLowerCase();
   
-  if (command === "ping") {
-    const timeTaken = Date.now() - message.createdTimestamp;
-    message.reply(`Pong! This message had a latency of ${timeTaken}ms.`);
-  }else if (command === "logout") {
-    const timeTaken = Date.now() - message.createdTimestamp;
-    message.reply(`ok, i will logout now! This message had a latency of ${timeTaken}ms.`);
-    client.destroy();
-  } else if(command === "hltb"){
-    getResultHLTB(message, commandBody);
-  } else if(command === "virement"){
-    message.reply(`Va te faire foutre avec ton virement ${args[0]}.`);
-  } else {
-    const timeTaken = Date.now() - message.createdTimestamp;
-    message.reply(`I don't know this command! This message had a latency of ${timeTaken}ms.`);
+  switch(command) {
+    case 'ping':
+      message.reply(`Pong! This message had a latency of ${utils.getTimeTaken(message.createdTimestamp)}ms.`);
+      break;
+    case 'hltb':
+      hltbSrv.getResultHLTB(message, commandBody);
+      break;
+    case 'virement':
+      message.reply(`Va te faire foutre avec ton virement ${args[0]}.`);
+      break;
+    case 'logout':
+      message.reply(`ok, i will logout now! This message had a latency of ${utils.getTimeTaken(message.createdTimestamp)}ms.`);
+      client.destroy();
+      break;
+    case 'reboot':
+      message.reply(`ok, i will reboot now! This message had a latency of ${utils.getTimeTaken(message.createdTimestamp)}ms.`);
+      client.destroy();
+      client.login(config.BOT_TOKEN);
+      break;
+    default:
+      message.reply(`I don't know this command! This message had a latency of ${getTimeTaken(message.createdTimestamp)}ms.`);
   }
 });
 
-client.destroy();
 client.login(config.BOT_TOKEN);
