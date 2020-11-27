@@ -9,7 +9,6 @@ const getResultHLTB = (message, commandBody) => {
   const hltbArg = commandBody.slice(5);
   
   hltbService.search(hltbArg).then(result => {
-    console.log(commandBody);
     const limit = result.length > 3 ? 3 : result.length;
     
     if(result.length === 0){      
@@ -44,7 +43,7 @@ const getResultHLTB = (message, commandBody) => {
       });
     }
 
-    messageToSend.forEach(msg => message.reply({ embed: utils.createEmbedMsg(msg) }));
+    messageToSend.forEach(msg => message.reply(utils.createEmbedMsg(msg)));
   });
 }
 

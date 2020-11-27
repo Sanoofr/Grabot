@@ -18,30 +18,52 @@ client.on("message", function(message) {
   if (!message.content.startsWith(prefix)) return;
   
   const commandBody = message.content.slice(prefix.length);
+  console.log(commandBody);
+
   const args = commandBody.split(' ');
   const command = args.shift().toLowerCase();
   
   switch(command) {
     case 'ping':
-      message.reply(`Pong! This message had a latency of ${utils.getTimeTaken(message.createdTimestamp)}ms.`);
+      message.reply( utils.createEmbedMsg({ 
+        color: utils.colors.BLUE,
+        title: `Pong!`,
+        timeRequest: message.createdTimestamp,
+      }));
       break;
     case 'hltb':
       hltbSrv.getResultHLTB(message, commandBody);
       break;
     case 'virement':
-      message.reply(`Va te faire foutre avec ton virement ${args[0]}.`);
+      message.reply( utils.createEmbedMsg({ 
+        color: utils.colors.BLUE,
+        title: `Va te faire foutre avec ton virement ${args[0]}.`,
+        timeRequest: message.createdTimestamp,
+      }));
       break;
     case 'logout':
-      message.reply(`ok, i will logout now! This message had a latency of ${utils.getTimeTaken(message.createdTimestamp)}ms.`);
+      message.reply( utils.createEmbedMsg({ 
+        color: utils.colors.BLUE,
+        title: `ok, i will logout now!`,
+        timeRequest: message.createdTimestamp,
+      }));
       client.destroy();
       break;
     case 'reboot':
-      message.reply(`ok, i will reboot now! This message had a latency of ${utils.getTimeTaken(message.createdTimestamp)}ms.`);
+      message.reply(utils.createEmbedMsg({ 
+        color: utils.colors.BLUE,
+        title: `ok, i will reboot now!`,
+        timeRequest: message.createdTimestamp,
+      }));
       client.destroy();
       client.login(config.BOT_TOKEN);
       break;
     default:
-      message.reply(`I don't know this command! This message had a latency of ${getTimeTaken(message.createdTimestamp)}ms.`);
+      message.reply(utils.createEmbedMsg({ 
+        color: utils.colors.BLUE,
+        title: `I don't know this command!`,
+        timeRequest: message.createdTimestamp,
+      }));
   }
 });
 
