@@ -2,7 +2,7 @@
 
 Grabot will search information for you in howlongtobeat.com to retreive the time needed to finished a game.
 
-![Alt text](README/grabot_example.PNG?raw=true "Grabot example")
+![Alt text](https://github.com/Sanoofr/Grabot/blob/main/README/grabot_example.PNG?raw=true "Grabot example")
 
 # Commands
 
