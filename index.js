@@ -34,13 +34,6 @@ client.on("message", function(message) {
     case 'hltb':
       hltbSrv.getResultHLTB(message, commandBody);
       break;
-    case 'virement':
-      message.reply( utils.createEmbedMsg({ 
-        color: utils.colors.BLUE,
-        title: `Va te faire foutre avec ton virement ${args[0]}.`,
-        timeRequest: message.createdTimestamp,
-      }));
-      break;
     case 'logout':
       message.reply( utils.createEmbedMsg({ 
         color: utils.colors.BLUE,
