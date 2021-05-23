@@ -7,13 +7,14 @@ const colors = {
 const getTimeTaken = origin => origin ? Date.now() - origin : '-1';
 
 const createEmbedMsg = (messageInfo) => {
+  console.log(JSON.stringify(messageInfo));
   return { 
     embed: {
       color: messageInfo.color,
       title: messageInfo.title,
       url: messageInfo.url,
       thumbnail: {
-        url: messageInfo.imageUrl,
+        url: `https://howlongtobeat.com${messageInfo.imageUrl}`,
       },
       fields: messageInfo.fields || [],
       timestamp: new Date(),
