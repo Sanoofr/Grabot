@@ -1,4 +1,4 @@
-# Grabot - A HLTB bot for discord
+# Grabot - A HLTB bot for discord (ARCHIVED)
 
 Grabot will search information for you in howlongtobeat.com to retreive the time needed to finished a game.
 
